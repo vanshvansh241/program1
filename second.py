@@ -187,3 +187,52 @@ num4=10
 while num4>0:
      print(num4)
      num4-=1
+num = 1234
+reverse = 0
+while num > 0:
+ digit = num % 10
+ reverse = reverse * 10 + digit
+ num = num // 10
+print("Reversed Number =", reverse)
+
+
+num = int(input("Enter a number: "))
+i = 2
+is_prime = True
+while i < num:
+ if num % i == 0:
+  is_prime = False
+ break
+ i += 1
+if is_prime and num > 1:
+ print("Prime Number")
+else:
+ print("Not Prime Number")
+
+
+for i in range(1, 5):
+    for j in range(1, 5):
+        print("hello")
+
+for i in range(1, 4):
+    for j in range(1, 4):
+          print(i)
+
+
+for i in range(1, 4):
+    for j in range(1, 4):
+          print(j)
+
+
+
+for i in range(1, 4):
+    for j in range(1, 4):
+          print(i*j)
+
+
+
+for i in range(1, 4):
+    for j in range(1, 4):
+         for k in range(1, 4):
+             print(i*j*k)
+    
