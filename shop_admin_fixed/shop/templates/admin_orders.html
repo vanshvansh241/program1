@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Orders Management | GalaxyStore{% endblock %}
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <p class="tag">ADMIN / ORDERS</p>
+        <h1>Customer Orders</h1>
+        <div class="filters">
+            <a class="{% if status == 'All' %}active{% endif %}" href="{{ url_for('admin_orders') }}">All</a>
+            <a class="{% if status == 'Pending' %}active{% endif %}" href="{{ url_for('admin_orders', status='Pending') }}">Pending</a>
+            <a class="{% if status == 'Confirmed' %}active{% endif %}" href="{{ url_for('admin_orders', status='Confirmed') }}">Confirmed</a>
+            <a class="{% if status == 'Completed' %}active{% endif %}" href="{{ url_for('admin_orders', status='Completed') }}">Completed</a>
+            <a class="{% if status == 'Cancelled' %}active{% endif %}" href="{{ url_for('admin_orders', status='Cancelled') }}">Cancelled</a>
+        </div>
+    </div>
+</section>
+
+<section class="section admin-section">
+    <div class="container">
+        <div class="admin-table-card">
+            <div class="table-wrap">
+                <table class="admin-table">
+                    <thead>
+                        <tr><th>Order</th><th>Customer</th><th>Phone</th><th>Product</th><th>Price</th><th>Date</th><th>Status</th><th>Update</th></tr>
+                    </thead>
+                    <tbody>
+                    {% for order in orders %}
+                        <tr>
+                            <td>#{{ order.id }}</td>
+                            <td>{{ order.customer_name }}</td>
+                            <td>{{ order.phone }}</td>
+                            <td>{{ order.product_name }}</td>
+                            <td>₹{{ "%.0f"|format(order.price) }}</td>
+                            <td>{{ order.created_at }}</td>
+                            <td><span class="status status-{{ order.status|lower }}">{{ order.status }}</span></td>
+                            <td>
+                                <form method="POST" action="{{ url_for('update_order_status', order_id=order.id) }}" class="status-form">
+                                    <select name="status">
+                                        {% for option in ['Pending', 'Confirmed', 'Completed', 'Cancelled'] %}
+                                            <option value="{{ option }}" {% if order.status == option %}selected{% endif %}>{{ option }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <button class="btn primary btn-small" type="submit">Update</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="8" class="empty-state">No orders found.</td></tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

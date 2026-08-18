@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block title %}Home | CampusStore{% endblock %}
+{% block content %}
+
+<section class="hero">
+    <div class="container hero-grid">
+        <div>
+            <p class="tag">YOUR SCHOOL ESSENTIALS STORE</p>
+            <h1>Everything your student needs, <span>in one place.</span></h1>
+            <p class="hero-text">Quality stationery, school uniforms, shoes and accessories for students of all ages.</p>
+            <div class="hero-buttons">
+                <a href="{{ url_for('products') }}" class="btn primary">Shop Products</a>
+                <a href="#contact" class="btn secondary">Contact Us</a>
+            </div>
+        </div>
+        <div class="hero-card">
+            <div class="hero-icon">🎒</div>
+            <h3>School Ready</h3>
+            <p>Uniforms • Books • Pens • Bags • Accessories</p>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="section-title">
+            <p class="tag">OUR COLLECTION</p>
+            <h2>Popular Products</h2>
+        </div>
+        <div class="product-grid">
+            {% for product in products %}
+            <div class="product-card">
+                <div class="product-icon">
+                    {% if product.category == "Stationery" %}✏️{% else %}👕{% endif %}
+                </div>
+                <span class="category">{{ product.category }}</span>
+                <h3>{{ product.name }}</h3>
+                <p>{{ product.description }}</p>
+                <div class="product-bottom">
+                    <strong>₹{{ "%.0f"|format(product.price) }}</strong>
+                    <span class="{% if product.stock > 0 %}in-stock{% else %}out-stock{% endif %}">
+                        {% if product.stock > 0 %}In Stock{% else %}Out of Stock{% endif %}
+                    </span>
+                </div>
+                {% if product.stock > 0 %}
+                <button class="btn small" onclick="openOrder('{{ product.id }}', '{{ product.name }}')">Order Now</button>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="features">
+    <div class="container feature-grid">
+        <div><b>✓ Quality Products</b><p>Reliable products for everyday school use.</p></div>
+        <div><b>✓ Affordable Prices</b><p>Student-friendly prices for families.</p></div>
+        <div><b>✓ Easy Ordering</b><p>Send your order request in seconds.</p></div>
+    </div>
+</section>
+
+<section class="contact" id="contact">
+    <div class="container contact-box">
+        <div>
+            <p class="tag">GET IN TOUCH</p>
+            <h2>Need a school uniform or stationery?</h2>
+            <p>Visit our shop or call us for sizes, availability and bulk school orders.</p>
+        </div>
+        <div class="contact-details">
+            <p>📞<a href="tel:+919350418100"> <strong>+91 9350418100</strong></a></p>
+            <p>📍<a href="https://maps.app.goo.gl/Rd2B7Xh3AHG5p6G86?g_st=aw" target="_blank"> bhiwani road bypass, Jind, Haryana</a></p>
+        </div>
+    </div>
+</section>
+
+<div class="modal" id="orderModal">
+    <div class="modal-box">
+        <button class="close" onclick="closeOrder()">×</button>
+        <h2>Place Order Request</h2>
+        <p id="selectedProduct"></p>
+        <form action="{{ url_for('order') }}" method="POST">
+            <input type="hidden" name="product_id" id="productId">
+            <label>Your Name</label>
+            <input name="name" required placeholder="Enter your name">
+            <label>Phone Number</label>
+            <input name="phone" required placeholder="Enter your phone number">
+            <button class="btn primary full" type="submit">Submit Order</button>
+        </form>
+    </div>
+</div>
+
+<script>
+function openOrder(id, name) {
+    document.getElementById("productId").value = id;
+    document.getElementById("selectedProduct").textContent = "Product: " + name;
+    document.getElementById("orderModal").classList.add("show");
+}
+function closeOrder() {
+    document.getElementById("orderModal").classList.remove("show");
+}
+</script>
+{% endblock %}

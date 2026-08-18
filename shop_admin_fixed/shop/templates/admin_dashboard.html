@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard | GalaxyStore{% endblock %}
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <p class="tag">ADMIN PANEL</p>
+        <h1>Dashboard</h1>
+        <p class="dashboard-subtitle">Manage products, stock and customer orders from one place.</p>
+    </div>
+</section>
+
+<section class="section admin-section">
+    <div class="container">
+        <div class="admin-cards">
+            <a class="admin-card" href="{{ url_for('admin_products') }}">
+                <span class="admin-card-icon">📦</span>
+                <span class="admin-card-number">{{ total_products }}</span>
+                <span class="admin-card-title">Total Products</span>
+            </a>
+            <a class="admin-card warning-card" href="{{ url_for('admin_products') }}">
+                <span class="admin-card-icon">⚠️</span>
+                <span class="admin-card-number">{{ low_stock }}</span>
+                <span class="admin-card-title">Low Stock</span>
+            </a>
+            <a class="admin-card" href="{{ url_for('admin_orders') }}">
+                <span class="admin-card-icon">🛒</span>
+                <span class="admin-card-number">{{ total_orders }}</span>
+                <span class="admin-card-title">Total Orders</span>
+            </a>
+            <a class="admin-card pending-card" href="{{ url_for('admin_orders', status='Pending') }}">
+                <span class="admin-card-icon">⏳</span>
+                <span class="admin-card-number">{{ pending_orders }}</span>
+                <span class="admin-card-title">Pending Orders</span>
+            </a>
+            <a class="admin-card success-card" href="{{ url_for('admin_orders', status='Completed') }}">
+                <span class="admin-card-icon">✅</span>
+                <span class="admin-card-number">{{ completed_orders }}</span>
+                <span class="admin-card-title">Completed Orders</span>
+            </a>
+            <a class="admin-card danger-card" href="{{ url_for('admin_orders', status='Cancelled') }}">
+                <span class="admin-card-icon">❌</span>
+                <span class="admin-card-number">{{ cancelled_orders }}</span>
+                <span class="admin-card-title">Cancelled Orders</span>
+            </a>
+        </div>
+
+        <div class="admin-actions">
+            <a class="btn primary" href="{{ url_for('add_product') }}">＋ Add New Product</a>
+            <a class="btn secondary" href="{{ url_for('admin_products') }}">📦 Manage Products</a>
+            <a class="btn secondary" href="{{ url_for('admin_orders') }}">🛒 Manage Orders</a>
+            <a class="btn secondary" href="{{ url_for('admin_logout') }}">Logout</a>
+        </div>
+
+        <div class="admin-table-card">
+            <div class="admin-table-header">
+                <div>
+                    <p class="tag">RECENT ACTIVITY</p>
+                    <h2>Recent Orders</h2>
+                </div>
+                <a class="btn secondary" href="{{ url_for('admin_orders') }}">View All</a>
+            </div>
+            {% if recent_orders %}
+            <div class="table-wrap">
+                <table class="admin-table">
+                    <thead>
+                        <tr><th>Order</th><th>Customer</th><th>Product</th><th>Status</th></tr>
+                    </thead>
+                    <tbody>
+                    {% for order in recent_orders %}
+                        <tr>
+                            <td>#{{ order.id }}</td>
+                            <td>{{ order.customer_name }}</td>
+                            <td>{{ order.product_name }}</td>
+                            <td><span class="status status-{{ order.status|lower }}">{{ order.status }}</span></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+                <p class="empty-state">No customer orders yet.</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

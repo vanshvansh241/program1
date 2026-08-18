@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Products | CampusStore{% endblock %}
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <p class="tag">SHOP</p>
+        <h1>{{ category }} Products</h1>
+        <div class="filters">
+            <a class="{% if category == 'All' %}active{% endif %}" href="{{ url_for('products') }}">All</a>
+            <a class="{% if category == 'Stationery' %}active{% endif %}" href="{{ url_for('products', category='Stationery') }}">Stationery</a>
+            <a class="{% if category == 'School Dress' %}active{% endif %}" href="{{ url_for('products', category='School Dress') }}">School Dress</a>
+        </div>
+    </div>
+</section>
+<section class="section">
+    <div class="container product-grid">
+        {% for product in products %}
+        <div class="product-card">
+            <div class="product-icon">{% if product.category == "Stationery" %}✏️{% else %}👕{% endif %}</div>
+            <span class="category">{{ product.category }}</span>
+            <h3>{{ product.name }}</h3>
+            <p>{{ product.description }}</p>
+            <div class="product-bottom">
+                <strong>₹{{ "%.0f"|format(product.price) }}</strong>
+                <span>{{ product.stock }} available</span>
+            </div>
+        </div>
+        {% else %}
+        <p>No products found.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

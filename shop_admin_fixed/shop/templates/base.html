@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Galaxy Mart Stationery & Uniforms{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="header">
+    <div class="container nav">
+        <a href="{{ url_for('home') }}" class="logo"><span>The Little Galaxy Mart</span></a>
+        <nav>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('products') }}">Products</a>
+            <a href="{{ url_for('products', category='Stationery') }}">Stationery</a>
+            <a href="{{ url_for('products', category='School Dress') }}">School Dress</a>
+            {% if session.get("admin_logged_in") %}
+            <a href="{{ url_for('admin_dashboard') }}" class="admin-link">Admin Dashboard</a>
+            {% else %}
+            <a href="{{ url_for('admin_login') }}" class="admin-link">Admin Login</a>
+            {% endif %}
+        </nav>
+    </div>
+</header>
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="container alerts">
+        {% for message in messages %}
+            <div class="alert">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+{% endwith %}
+
+{% block content %}{% endblock %}
+
+<footer>
+    <div class="container footer-content">
+        <div>
+            <h3>The Little Galaxy Mart</h3>
+            <p>Stationery and school uniforms at one convenient place.</p>
+        </div>
+        <div>
+            <p>📍 Bhiwani road bypass, Jind</p>
+            <p>📞 +91 9350418100</p>
+        </div>
+    </div>
+    <p class="copyright">© 2026 CampusStore. All rights reserved.</p>
+</footer>
+</body>
+</html>

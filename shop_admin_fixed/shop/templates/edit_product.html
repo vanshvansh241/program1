@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Edit Product | GalaxyStore{% endblock %}
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <p class="tag">ADMIN / PRODUCT MANAGEMENT</p>
+        <h1>Edit Product</h1>
+    </div>
+</section>
+
+<section class="form-section">
+    <form class="admin-form" method="POST" action="{{ url_for('edit_product', product_id=product.id) }}">
+        <label for="name">Product Name</label>
+        <input id="name" name="name" value="{{ product.name }}" required>
+
+        <label for="category">Category</label>
+        <select id="category" name="category" required>
+            <option value="Stationery" {% if product.category == 'Stationery' %}selected{% endif %}>Stationery</option>
+            <option value="School Dress" {% if product.category == 'School Dress' %}selected{% endif %}>School Dress</option>
+        </select>
+
+        <label for="price">Price (₹)</label>
+        <input id="price" type="number" name="price" min="0" step="0.01" value="{{ product.price }}" required>
+
+        <label for="stock">Stock Quantity</label>
+        <input id="stock" type="number" name="stock" min="0" value="{{ product.stock }}" required>
+
+        <label for="description">Description</label>
+        <textarea id="description" name="description" rows="4">{{ product.description or '' }}</textarea>
+
+        <div class="form-actions">
+            <button class="btn primary" type="submit">Save Changes</button>
+            <a class="btn secondary" href="{{ url_for('admin_products') }}">Cancel</a>
+        </div>
+    </form>
+</section>
+{% endblock %}
